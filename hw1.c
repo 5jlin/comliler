@@ -1,11 +1,13 @@
 #include<stdio.h>
 #include<stdlib.h>
+//FILE *fp;
+//fp = fopen("token.txt","w");
 
-int identifier(int a,char data[]){
+int identifier(int a,char data[],FILE *fp){
 	int b,i;
 	int key = 0;
 	int out = 0;
-	int length2 = 0;
+	int length2 = 1;
 //	int spec[33] ={0};
 //    int spec[33] ={32,33,34,39,40,41,42,43,44,45,46,47,58,59,60,61,62,63,91,92,93,94,123,125};
 	int spec[33];
@@ -43,11 +45,11 @@ int identifier(int a,char data[]){
             }*/
 
         key = 0;
-        printf("    <Identifier> : ");
+        fprintf(fp,"    <Identifier> : ");
         for(b = out ; b < length2 + out ; b++){
-            printf("%c",data[b]);
+            fprintf(fp,"%c",data[b]);
         }
-        printf("\n");
+        fprintf(fp,"\n");
         out = out + length2;
         return out;
 }
@@ -61,7 +63,10 @@ int main(){
     int key = 0;
     int line = 0;
     FILE *fptr;
-    fptr = fopen("test.c","r");
+    fptr = fopen("main.c","r");//input file
+    FILE *fp;
+    fp = fopen("token.txt","w");//output file
+
     if(!fptr){
         printf("something wrong...");
         exit(1);
@@ -77,7 +82,7 @@ int main(){
     }
     a = 0;
 
-// some keyword doenn't followed with space???
+
     while(a < length){
 
         for(i = 0 ; i < 53 ; i++){
@@ -96,108 +101,112 @@ int main(){
 
         if(key == 1 && data[a] =='i'){
             if(data[a+1] == 'n' && data[a+2] == 't' && data[a+3] == ' '){
-                printf("    <Keyword> : %c%c%c\n",data[a],data[a+1],data[a+2]);
+                fprintf(fp,"    <Keyword> : %c%c%c\n",data[a],data[a+1],data[a+2]);
                 a = a + 3;
             }
-            else if(data[a+1] == 'f' && data[a+2] == ' '){
-                printf("    <Keyword> : %c%c\n",data[a],data[a+1]);
+            else if(data[a+1] == 'f' && (data[a+2] == ' ' || data[a+2] == '(')){
+                fprintf(fp,"    <Keyword> : %c%c\n",data[a],data[a+1]);
                 a = a + 2;
             }
             else{
-                a = identifier(a,data);
+                a = identifier(a,data,fp);
             }
             }
 
         else if(key == 1 && data[a] == 'c'){
             if(data[a+1] == 'h' && data[a+2] == 'a' && data[a+3] == 'r' && data[a+4] == ' '){
-                printf("    <Keyword> : %c%c%c%c\n",data[a],data[a+1],data[a+2],data[a+3]);
+                fprintf(fp,"    <Keyword> : %c%c%c%c\n",data[a],data[a+1],data[a+2],data[a+3]);
                 a = a + 4;
             }
 
             else{
-                a = identifier(a,data);
+                a = identifier(a,data,fp);
             }
         }
 
         else if(key == 1 && data[a] == 'f'){
-            if(data[a+1] == 'l' && data[a+2] == 'o' && data[a+3] == 'a' && data[a+4] == 't' && data[a+5] == ' '){
-                printf("    <Keyword> : %c%c%c%c%c\n",data[a],data[a+1],data[a+2],data[a+3],data[a+4]);
+            if(data[a+1] == 'l' && data[a+2] == 'o' && data[a+3] == 'a' && data[a+4] == 't' && (data[a+5] == ' ' || data[a+5] == ')')){
+                fprintf(fp,"    <Keyword> : %c%c%c%c%c\n",data[a],data[a+1],data[a+2],data[a+3],data[a+4]);
                 a = a + 5;
             }
+            else if(data[a+1] == 'o' && data[a+2] == 'r' && (data[a+3] == ' ' || data[a+3] == '(')){
+                 fprintf(fp,"    <Keyword> : %c%c%c\n",data[a],data[a+1],data[a+2]);
+                 a = a + 3;
+                    }
 
             else{
-                a = identifier(a,data);
+                a = identifier(a,data,fp);
             }
         }
 
         else if(key == 1 && data[a] == 'd'){
             if(data[a+1] == 'o' && data[a+2] == 'u' && data[a+3] == 'b' && data[a+4] == 'l' && data[a+5] == 'e' && data[a+6] == ' '){
-                printf("    <Keyword> : %c%c%c%c%c%c\n",data[a],data[a+1],data[a+2],data[a+3],data[a+4],data[a+5]);
+                fprintf(fp,"    <Keyword> : %c%c%c%c%c%c\n",data[a],data[a+1],data[a+2],data[a+3],data[a+4],data[a+5]);
                 a = a + 6;
             }
 
             else{
-                a = identifier(a,data);
+                a = identifier(a,data,fp);
             }
         }
 
         else if(key == 1 && data[a] == 'r'){
-            if(data[a+1] == 'e' && data[a+2] == 't' && data[a+3] == 'u' && data[a+4] == 'r' && data[a+5] == 'n' && data[a+6] == ' '){
-                printf("    <Keyword> : %c%c%c%c%c%c\n",data[a],data[a+1],data[a+2],data[a+3],data[a+4],data[a+5]);
+            if(data[a+1] == 'e' && data[a+2] == 't' && data[a+3] == 'u' && data[a+4] == 'r' && data[a+5] == 'n' && data[a+6] == ' ' ){
+                fprintf(fp,"    <Keyword> : %c%c%c%c%c%c\n",data[a],data[a+1],data[a+2],data[a+3],data[a+4],data[a+5]);
                 a = a + 6;
             }
             else{
-                a = identifier(a,data);
+                a = identifier(a,data,fp);
             }
         }
 
         else if(key == 1 && data[a] == 'e'){
-            if(data[a+1] == 'l' && data[a+2] == 's' && data[a+3] == 'e' && data[a+4] == ' '){
-                printf("    <Keyword> : %c%c%c%c\n",data[a],data[a+1],data[a+2],data[a+3]);
+            if(data[a+1] == 'l' && data[a+2] == 's' && data[a+3] == 'e' && (data[a+4] == ' ' || data[a+4] == '{')){
+                fprintf(fp,"    <Keyword> : %c%c%c%c\n",data[a],data[a+1],data[a+2],data[a+3]);
                 a = a + 4;
             }
             else{
-                a = identifier(a,data);
+                a = identifier(a,data,fp);
             }
         }
 
         else if(key == 1 && data[a] == 'w'){
-            if(data[a+1] == 'h' && data[a+2] == 'i' && data[a+3] == 'l' && data[a+4] == 'e' && data[a+5] == ' '){
-                printf("    <Keyword> : %c%c%c%c%c\n",data[a],data[a+1],data[a+2],data[a+3],data[a+4]);
+            if(data[a+1] == 'h' && data[a+2] == 'i' && data[a+3] == 'l' && data[a+4] == 'e' && (data[a+5] == ' ' || data[a+5] == '(')){
+                fprintf(fp,"    <Keyword> : %c%c%c%c%c\n",data[a],data[a+1],data[a+2],data[a+3],data[a+4]);
                 a = a + 5;
             }
             else{
-                a = identifier(a,data);
+                a = identifier(a,data,fp);
             }
         }
 
         else if(key == 1 && data[a] == 'b'){
-            if(data[a+1] == 'r' && data[a+2] == 'e' && data[a+3] == 'a' && data[a+4] == 'k' && data[a+5] == ' '){
-                printf("    <Keyword> : %c%c%c%c%c\n",data[a],data[a+1],data[a+2],data[a+3],data[a+4]);
+            if(data[a+1] == 'r' && data[a+2] == 'e' && data[a+3] == 'a' && data[a+4] == 'k' && (data[a+5] == ' ' || data[a+5] == ';')){
+                fprintf(fp,"    <Keyword> : %c%c%c%c%c\n",data[a],data[a+1],data[a+2],data[a+3],data[a+4]);
                 a = a + 5;
             }
             else{
-                a = identifier(a,data);
+                a = identifier(a,data,fp);
             }
         }
 
         else if(key == 1 && data[a] == 'p'){
-            if(data[a+1] == 'r' && data[a+2] == 'i' && data[a+3] == 'n' && data[a+4] == 't' && data[a+5] == ' '){
-                printf("    <Keyword> : %c%c%c%c%c\n",data[a],data[a+1],data[a+2],data[a+3],data[a+4]);
+            if(data[a+1] == 'r' && data[a+2] == 'i' && data[a+3] == 'n' && data[a+4] == 't' && (data[a+5] == ' ') || (data[a+5] == '(')){
+                fprintf(fp,"    <Keyword> : %c%c%c%c%c\n",data[a],data[a+1],data[a+2],data[a+3],data[a+4]);
                 a = a + 5;
             }
             else{
-                a = identifier(a,data);
+                a = identifier(a,data,fp);
             }
         }
 
         else if(key == 1 && data[a] == 'f'){
-            if(data[a+1] == 'o' && data[a+2] == 'r' && data[a+3] == ' ' ){
-                printf("    <Keyword> : %c%c%c\n",data[a],data[a+1],data[a+2]);
+            if(data[a+1] == 'o' && data[a+2] == 'r' && (data[a+3] == ' ' ) || data[a+3] == '('){
+                fprintf(fp,"    <Keyword> : %c%c%c\n",data[a],data[a+1],data[a+2]);
                 a = a + 3;
             }
             else{
-                a = identifier(a,data);
+                a = identifier(a,data,fp);
             }
         }
 
@@ -218,7 +227,7 @@ int main(){
             a = a + length2;
             }*/
         else if(key == 1){
-            a = identifier(a,data);
+            a = identifier(a,data,fp);
 
         }
 
@@ -227,42 +236,42 @@ int main(){
         }
 
         else if(data[a] == '(' || data[a] == ')' || data[a] == '[' || data[a] == ']'){
-            printf("    <special> : %c\n",data[a]);
+            fprintf(fp,"    <special> : %c\n",data[a]);
             a++;
         }
 
         else if(data[a] == ';' || data[a] == ',' || data[a] == '{' || data[a] == '}'){
-            printf("    <special> : %c\n",data[a]);
+            fprintf(fp,"    <special> : %c\n",data[a]);
             a++;
         }
 
         else if(data[a] == '+' || data[a] == '-' || data[a] == '*' || data[a] == '/'){
-            printf("    <Operator> : %c\n",data[a]);
+            fprintf(fp,"    <Operator> : %c\n",data[a]);
             a++;
         }
 
         else if((data[a] == '=' && data[a+1] != '=') || (data[a] == '!' && data[a+1] != '=') ){
-            printf("    <Operator> : %c\n",data[a]);
+            fprintf(fp,"    <Operator> : %c\n",data[a]);
             a++;
         }
 
         else if((data[a] == '=' && data[a+1] == '=') || (data[a] == '!' && data[a+1] == '=') ){
-            printf("    <Operator> : %c%c\n",data[a],data[a+1]);
+            fprintf(fp,"    <Operator> : %c%c\n",data[a],data[a+1]);
             a = a + 2;
         }
 
         else if((data[a] == '|' && data[a+1] == '|') || (data[a] == '&' && data[a+1] == '&') ){
-            printf("    <Operator> : %c%c\n",data[a],data[a+1]);
+            fprintf(fp,"    <Operator> : %c%c\n",data[a],data[a+1]);
             a = a + 2;
         }
 
         else if((data[a] == '>' && data[a+1] != '=') || (data[a] == '<' && data[a+1] != '=') ){
-            printf("    <Operator> : %c\n",data[a]);
+            fprintf(fp,"    <Operator> : %c\n",data[a]);
             a++;
         }
 
         else if((data[a] == '>' && data[a+1] == '=') || (data[a] == '<' && data[a+1] == '=') ){
-            printf("    <Operator> : %c%c\n",data[a],data[a+1]);
+            fprintf(fp,"    <Operator> : %c%c\n",data[a],data[a+1]);
             a = a + 2;
         }
 
@@ -338,11 +347,11 @@ int main(){
             }
 
 
-            printf("    <Number> : ");
+            fprintf(fp,"    <Number> : ");
             for(i = a ; i < a + length2 -1; i++){
-                printf("%c",data[i]);
+                fprintf(fp,"%c",data[i]);
             }
-            printf("\n");
+            fprintf(fp,"\n");
             a = a + length2-1;
             }
             else {
@@ -352,11 +361,11 @@ int main(){
                         break;
                     }
                 }
-            printf("    <Error> : ");
+            fprintf(fp,"    <Error> : ");
             for(b = a ; b < last + a ; b++){
-                    printf("%c",data[b]);
+                    fprintf(fp,"%c",data[b]);
                 }
-                printf("\n");
+                fprintf(fp,"\n");
             a = a + last;
 
             }
@@ -370,15 +379,15 @@ int main(){
         }
 
         else if(data[a] == 39 && data[a+2] == 39){
-            printf("    <Char> : %c",data[a+1]);
+            fprintf(fp,"    <Char> : %c",data[a+1]);
             a = a + 3;
-            printf("\n");
+            fprintf(fp,"\n");
         }
 
         else if(data[a] == 39 && data[a+3] == 39 && data[a+1] == 92 && (data[a+2] == 't' || data[a+2] == 'n')){
-            printf("    <Char> : %c%c",data[a+1],data[a+2]);
+            fprintf(fp,"    <Char> : %c%c",data[a+1],data[a+2]);
             a = a + 4;
-            printf("\n");
+            fprintf(fp,"\n");
         }
 
         else if(data[a] == '\t'){
@@ -394,9 +403,11 @@ int main(){
 
     }
         line++ ;
-        printf("Line %d\n",line);
+        fprintf(fp,"Line %d\n",line);
 
 	}
 	fclose(fptr);
+	fclose(fp);
     return 0;
 }
+
