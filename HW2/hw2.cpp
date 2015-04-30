@@ -20,6 +20,8 @@ int main(){
 void findFirst(){
     fstream fin;
     fin.open("grammar.txt",ios::in);
+    fstream fw;
+    fw.open("set2.txt",ios::out);
     int row = 0;
     int col = 0;
     int check = 0;
@@ -150,12 +152,14 @@ check = 0;
 
         int len = 0;
         int len2 = 0;
-        c = -1;
+        c = 26;
         row = 1;
-        for(int i=0;i<94;i++){
+
+  //      for(int i=0;i<94;i++){
+        for(int i=93;i>=0;i--){
             str = grammar[i][0] ;
             if(str[0] >= 65 && str[0] <= 90){
-                c++;
+                c--;
             }
             if(str[0] == '\t'){
                 sub_str = grammar[i][1] ;
@@ -183,41 +187,60 @@ check = 0;
                 }
             }
             }
+        //    cout << c << "ASD";
 //------------------
- /*   c = -1;
+cout << first[16][0] << "AXCV" << endl;
+    c = 26;
         row = 1;
-        for(int i=0;i<94;i++){
+     //   for(int i=0;i<94;i++){
+        for(int i=93;i>=0;i--){
             str = grammar[i][0] ;
             if(str[0] >= 65 && str[0] <= 90){
-                c++;
+                c--;
             }
             if(str[0] == '\t'){
                 sub_str = grammar[i][1] ;
+             //   cout << first[16][0] << "AXCV" << endl;
                 for(int j=0;j<28;j++){
-                    if(grammar[i][1] == first[j][0] && mark[c] != j){
+                    if(grammar[i][1] == first[j][0] /*&& mark[c] != j*/){
                     //    cout << grammar[i][1] << " ";
+                //    cout << first[16][0] << "AXCV2" << endl;
                         for(int m=1;m<30;m++){
                             if(first[j][m] == ""){
                                 len = m ;
                                 break;
                             }
                         }
+                      //  cout << first[16][0] << "AXCV2" << endl;
                         for(int m=1;m<30;m++){
                             if(first[c][m] == ""){
                                 len2 = m - 1 ;
                                 break;
                             }
                         }
+                    //    cout << first[16][0] << "AXCV3" << endl;
                         for(int m=1;m<len;m++){
                             first[c][len2+m] = first[j][m];
-
                         }
 
                     }
                 }
             }
             }
-*/
+//cout << first[16][0] << "AXCV" << endl;
+        for(int i=0;i<30;i++){
+            for(int j=1;j<30;j++){
+                str = first[i][j];
+                for(int k=j+1;k<30;k++){
+                    if(first[i][k] == str){
+                        first[i][k] = "";
+                    }
+                }
+            }
+        }
+first[16][0] = "StmtList'" ;
+//cout << first[25][0] << "AXCV" << endl;
+first[21][0] = "Expr'";
 //------------
 
 
@@ -226,10 +249,12 @@ check = 0;
     for(int i=0;i<40;i++){
         for(int j=0;j<30;j++){
             cout << " " << first[i][j] ;
+            fw << first[i][j] << " ";
         }
         cout  << endl;
+        fw << endl;
     }
-
+    fw.close();
     for(int i=0;i<94;i++){
         cout << " " << mark[i] ;
     }
