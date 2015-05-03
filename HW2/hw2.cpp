@@ -367,71 +367,7 @@ void findFollow(){
             }
         }
 
-        for(int i=0;i<83;i++){//avoid over
-            str = grammar[i][0];
-                if(str[0] != '\t'){
-                    for(int j = 1 ; j < 7 ; j++){
-                        str2 = grammar[i+j][0];
-                        if(str2[0] == '\t'){
-                            for(int k = 0 ; k < 10 ; k++){
-                            str3 = grammar[i+j][k];
-                            if(str3[0] == 32){
-                                len = k-1;
-                                break;
-                            }
-                        }
-                        }
-                        str3 = grammar[i+j][len] ;
-                        if(str3[0] >= 65 && str3[0] <= 90){
-                            for(int k=0;k<28;k++){
-                                if(str3 == follow[k][0]){
-                                    c1 = k;
-                                    break;
-                                }
-                            }
-                            for(int k=0;k<28;k++){
-                                if(str == follow[k][0]){
-                                    c2 = k;
-                                    break;
-                                }
-                            }
-                        }
-                        for(int m=1;m<30;m++){
-                            if(follow[c1][m] == ""){
-                                len3 = m ;
-                                break;
-                            }
-                        }
-                        for(int m=1;m<30;m++){
-                            if(follow[c2][m] == ""){
-                                len2 = m - 1 ;
-                                break;
-                            }
-                        }
-                        for(int m=1;m<=len2;m++){
-                            follow[c1][len3+m] = follow[c2][m];
-                        }
-                        if(str3 == str && grammar[i+2][1] == "epsilon"){
-                            str4 = grammar[i+1][len2-1];
-                            for(int k=0;k<28;k++){
-                                if(str4 == follow[k][0]){
-                                    c3 = k;
-                                    break;
-                                }
-                            }
-                        for(int m=1;m<=len2;m++){
-                            follow[c1][len3+m] = follow[c3][m];
-                        }
 
-
-                        }
-
-
-                    }
-
-                }
-
-        }
 
 
 
@@ -489,6 +425,118 @@ void findFollow(){
 
 
     }
+    for(int i=0;i<83;i++){//avoid over
+            str = grammar[i][0];
+                if(str[0] != '\t'){
+
+                    for(int j = 1 ; j < 7 ; j++){
+                        str2 = grammar[i+j][0];
+                        len = 0;
+                        if(str2[0] == '\t'){
+
+                            for(int k = 1 ; k < 10 ; k++){
+                            str3 = grammar[i+j][k];
+//cout << str3 << str3[0]<< endl;
+//printf("%d \n",str3[0]);
+                            if(str3[0] == 0){
+
+                                len = k-1;
+                                break;
+                            }
+                        }
+                        str3 = grammar[i+j][len] ;
+                  //      cout << i << " " << j << " " <<len<<" "<< str3 <<endl;
+                        if(str3[0] >= 65 && str3[0] <= 90){
+                            for(int k=0;k<28;k++){
+                                if(str3 == follow[k][0]){
+                                    c1 = k;
+                                    break;
+                                }
+                            }
+                            for(int k=0;k<28;k++){
+                                if(str == follow[k][0]){
+                                    c2 = k;
+                                    break;
+                                }
+                            }
+                        }
+                        for(int m=1;m<30;m++){
+                            if(follow[c1][m] == ""){
+                                len3 = m ;
+                                break;
+                            }
+                        }
+                        for(int m=1;m<30;m++){
+                            if(follow[c2][m] == ""){
+                                len2 = m - 1;
+                                break;
+                            }
+                        }
+                     //   cout << c1 <<" " << c2<<" "<<len2<<" "<<len3<<endl;
+
+
+                        for(int m=1;m<=len2;m++){
+                            follow[c1][len3+m] = follow[c2][m];
+                        }
+
+                        if(str == str3 && grammar[i+2][1] == "epsilon" ){
+                      //
+                            str4 = grammar[i+j][len-1];
+                            cout<<"     ywq          "<< str4 <<endl;
+                            for(int k=0;k<28;k++){
+                                if(str4 == follow[k][0]){
+                                    c3 = k;
+                                    break;
+                                }
+                            }
+                            for(int m=1;m<30;m++){
+                            if(follow[c3][m] == ""){
+                                len3 = m - 1;
+                                break;
+                            }
+                        }
+                            for(int m=1;m<30;m++){
+                            if(follow[c2][m] == ""){
+                                len2 = m - 1;
+                                break;
+                            }
+                        }
+
+                            for(int m=1;m<=len2;m++){
+                                follow[c3][len3+m] = follow[c2][m];
+
+                            }
+
+                        }
+
+
+                        }
+
+                        else break;
+
+
+                    /*    if(str3 == str && grammar[i+2][1] == "epsilon"){
+                            str4 = grammar[i+1][len2-1];
+                            for(int k=0;k<28;k++){
+                                if(str4 == follow[k][0]){
+                                    c3 = k;
+                                    break;
+                                }
+                            }
+                        for(int m=1;m<=len2;m++){
+                            follow[c1][len3+m] = follow[c3][m];
+                        }
+
+                        }*/
+
+
+                    }
+
+                }
+
+        }
+
+
 
  /*   for(int i=1;i<=40;i++){
         for(int j=1;j<=30;j++){
@@ -503,7 +551,7 @@ void findFollow(){
 
 
 
- /*   for(int i=0;i<30;i++){
+    for(int i=0;i<30;i++){
             for(int j=1;j<30;j++){
                 str = follow[i][j];
                 for(int k=j+1;k<30;k++){
@@ -512,7 +560,7 @@ void findFollow(){
                     }
                 }
             }
-        }*/
+        }
 
     for(int i=0;i<40;i++){
         for(int j=0;j<30;j++){
