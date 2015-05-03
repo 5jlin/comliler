@@ -237,9 +237,9 @@ void findFollow(){
     int check = 0;
     string str = "";
     string str2 = "";
-    string str3 = "";
+    string str3,str4 = "";
     int c1,c2,c3;
-    int len,len2;
+    int len,len2,len3;
 
     follow[0][1] = "$";
 
@@ -290,7 +290,7 @@ void findFollow(){
 
                         }
                //         cout << "yes" << str << " " << str2 <<endl;
-                    for(int m=1;m<30;m++){
+            /*        for(int m=1;m<30;m++){
                         if(first[c2][m] == "epsilon"){
                          //   cout << "yes" ;
                       //   str3 = ??; //c3
@@ -303,13 +303,10 @@ void findFollow(){
                             }
                             if(grammar[j][len] == str2){
                                 str3 = grammar[j-1][0];
-                                cout << "yes" << str3 <<endl;
+                     //           cout << "yes" << str3 <<endl;
                             }
-
                         }
-
                          }
-
 
                          for(int j=0;j<28;j++){
                             if(str3 == follow[j][0]){
@@ -339,11 +336,11 @@ void findFollow(){
 
                             }
 
-                        }*/
+                        }*//*
                                 //follow A
 
                             }
-                        }
+                        }*/
 
                 col ++;
             }
@@ -370,7 +367,121 @@ void findFollow(){
             }
         }
 
+        for(int i=0;i<83;i++){//avoid over
+            str = grammar[i][0];
+                if(str[0] != '\t'){
+                    for(int j = 1 ; j < 7 ; j++){
+                        str2 = grammar[i+j][0];
+                        if(str2[0] == '\t'){
+                            for(int k = 0 ; k < 10 ; k++){
+                            str3 = grammar[i+j][k];
 
+                            if(str3[0] == 32){
+                                len = k-1;
+                                break;
+                            }
+                        }
+                        }
+                        str3 = grammar[i+j][len] ;
+                        if(str3[0] >= 65 && str3[0] <= 90){
+                            for(int k=0;k<28;k++){
+                                if(str3 == follow[k][0]){
+                                    c1 = k;
+                                    break;
+                                }
+                            }
+                            for(int k=0;k<28;k++){
+                                if(str == follow[k][0]){
+                                    c2 = k;
+                                    break;
+                                }
+                            }
+
+                        }
+                        for(int m=1;m<30;m++){
+                            if(follow[c1][m] == ""){
+                                len3 = m ;
+                                break;
+                            }
+                        }
+                        for(int m=1;m<30;m++){
+                            if(follow[c2][m] == ""){
+                                len2 = m - 1 ;
+                                break;
+                            }
+                        }
+                        for(int m=1;m<=len2;m++){
+                            follow[c1][len3+m] = follow[c2][m];
+                        }
+                        if(str3 == str2 && grammar[i+1][1] == "epsilon"){
+                            str4 = grammar[i][len-1];
+                            for(int k=0;k<28;k++){
+                                if(str4 == follow[k][0]){
+                                    c1 = k;
+                                    break;
+                                }
+                            }
+                        for(int m=1;m<=len2;m++){
+                            follow[c1][len3+m] = follow[c2][m];
+                        }
+
+
+                        }
+
+
+                    }
+
+                }
+
+        }
+
+
+
+  /*      for(int m=1;m<30;m++){
+                        if(first[c2][m] == "epsilon"){
+                         //   cout << "yes" ;
+                      //   str3 = ??; //c3
+                         for(int j=0;j<93;j++){
+                            for(int n=1;n<30;n++){
+                            if(grammar[j][n] == ""){
+                                len = n - 1 ;
+                                break;
+                                }
+                            }
+                            if(grammar[j][len] == str2){
+                                str3 = grammar[j-1][0];
+                     //           cout << "yes" << str3 <<endl;
+                            }
+                        }
+                         }
+
+                         for(int j=0;j<28;j++){
+                            if(str3 == follow[j][0]){
+                                c3 = j;
+                                break;
+                            }
+                        for(int n=1;n<30;n++){
+                            if(follow[c1][n] == ""){
+                                len = n - 1 ;
+                                break;
+                            }
+                        }
+                        for(int n=1;n<30;n++){
+                            if(follow[c3][n] == ""){
+                                len2 = n - 1 ;
+                                break;
+                            }
+                        }
+                        for(int n=1;n<=len2;n++){
+                            follow[c3][len+n] = follow[c1][n];
+                       //   follow[c1][n] = follow[c3][len+n]  ;
+                        }
+
+
+                                //follow A
+
+                            }
+                        }*/
 
 
 
