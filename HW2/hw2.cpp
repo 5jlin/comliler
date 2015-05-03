@@ -375,7 +375,6 @@ void findFollow(){
                         if(str2[0] == '\t'){
                             for(int k = 0 ; k < 10 ; k++){
                             str3 = grammar[i+j][k];
-
                             if(str3[0] == 32){
                                 len = k-1;
                                 break;
@@ -396,7 +395,6 @@ void findFollow(){
                                     break;
                                 }
                             }
-
                         }
                         for(int m=1;m<30;m++){
                             if(follow[c1][m] == ""){
@@ -413,16 +411,16 @@ void findFollow(){
                         for(int m=1;m<=len2;m++){
                             follow[c1][len3+m] = follow[c2][m];
                         }
-                        if(str3 == str2 && grammar[i+1][1] == "epsilon"){
-                            str4 = grammar[i][len-1];
+                        if(str3 == str && grammar[i+2][1] == "epsilon"){
+                            str4 = grammar[i+1][len2-1];
                             for(int k=0;k<28;k++){
                                 if(str4 == follow[k][0]){
-                                    c1 = k;
+                                    c3 = k;
                                     break;
                                 }
                             }
                         for(int m=1;m<=len2;m++){
-                            follow[c1][len3+m] = follow[c2][m];
+                            follow[c1][len3+m] = follow[c3][m];
                         }
 
 
