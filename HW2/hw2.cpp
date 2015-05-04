@@ -5,6 +5,7 @@
 using namespace std;
 void findFirst();
 void findFollow();
+void LLtable();
 char line[40];
 string grammar[94][20];
 string first[40][30];
@@ -14,6 +15,7 @@ int list[28] ={0};
 int main(){
     findFirst();
     findFollow();
+    LLtable();
     return 0;
 }
 
@@ -62,7 +64,7 @@ void findFirst(){
             if(str[j] == ' ' || str[j] == '\0'){
                 sub_str = "";
                 sub_str.assign(str,space,j);
-                cout<<sub_str ;
+           //     cout<<sub_str ;
                 grammar[row][col] = sub_str;
                 col++;
                 space = j+1;
@@ -462,3 +464,121 @@ cout<< "asdfghj"<<endl;
     }
 
 }
+
+
+void LLtable(){
+    int row = 0;
+    int check = 0;
+    int c1,c2;
+    string str,str2,str3;
+    string str4 = "";
+    string lltable[300][4] = {""};
+
+    for(int j=0;j<40;j++){
+        for(int k=1;k<30;k++){
+            if(first[j][k] != ""){
+            lltable[row][0] = first[j][0];
+            lltable[row][1] = first[j][k];
+            row++;
+
+            }
+        }
+    }
+    for(int j=0;j<180;j++){
+            for(int i=0;i<85;i++){
+                str = grammar[i+2][0];
+                if(grammar[i][0] == lltable[j][0] && str[0] != '\t'){
+                    for(int m=1;m<10;m++){
+                    lltable[j][2] += (grammar[i+1][m]+" ");
+                    }
+             //       lltable[j][3] = "1";
+                }
+
+
+                 if(grammar[i][0] == lltable[j][0]){
+
+                    for(int k=1;k<16;k++){
+                        check = 0;
+                        str2 = grammar[i+k][0];
+                        if(str2[0] != '\t'){
+                            break;
+                        }
+
+                        else if(str2[0] == '\t' && grammar[i+k][1] != lltable[j][1]){
+                            str2 = grammar[i+k][1]; //VarDecl' FunDecl
+                            str3 = lltable[j][1]; //;
+                            for(int n=0;n<40;n++){
+                                 if(str2 == first[n][0]){
+                                    c1 = n;
+                                    break;
+                                 }
+                            }
+                            for(int n=0;n<20;n++){
+                                 if(str3 == first[c1][n]){
+                                    check = 1;
+                                 }
+                            }
+                            if(check == 1 && str2 != "epsilon"){
+                                str2 = "";
+                                for(int m=1;m<10;m++){
+                                    str2 += (grammar[i+k][m] + " ");
+                                }
+                                    lltable[j][2] = str2;
+                            }
+                            if (check == 1) break;
+
+                        }
+
+                        else if(  grammar[i+k][1] == lltable[j][1]){
+                            for(int n=1;n<10;n++){
+                                str4 += (grammar[i+k][n]+" ");
+                            }
+                          //  if(lltable[j][3] != "1")
+                                lltable[j][2] = str4;
+                            //lltable[j][3] = "1";
+                            str4 = "";
+                        }
+                    }
+                }
+            //    else{}
+
+            }
+    }
+
+    for(int j=0;j<180;j++){
+        if(lltable[j][1] == "epsilon"){
+            for(int n=0;n<40;n++){
+                if(follow[n][0] == lltable[j][0]){
+                    c2 = n;
+                    break;
+                }
+            }
+
+                    for(int n=0;n<25;n++){
+                        if(follow[c2][1+n] != ""){
+
+                        lltable[row][0] = follow[c2][0];
+                        lltable[row][1] = follow[c2][1+n];
+                        lltable[row][2] = "epsilon";
+                        row++;
+                        }
+                    }
+
+            lltable[j][0] = "";
+            lltable[j][1] = "";
+            lltable[j][2] = "";
+
+        }
+    }
+
+
+
+
+        for(int i=0;i<230;i++){
+        for(int j=0;j<3;j++){
+            cout << "    " << lltable[i][j] ;
+        }
+        cout  << endl;
+    }
+}
+
