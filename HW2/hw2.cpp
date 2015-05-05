@@ -6,16 +6,65 @@ using namespace std;
 void findFirst();
 void findFollow();
 void LLtable();
+void convert();
 char line[40];
 string grammar[94][20];
 string first[40][30];
 string follow[40][30]={};
 int list[28] ={0};
+string lltable[300][4] = {""};
+
+struct Tree
+{
+   int index;
+   string value;
+};
+
+class Stack
+{
+      private:
+              int top;
+              int size;
+              Tree *array;
+      public:
+             Stack(int s)
+             {
+                 size=s;
+                 array=new Tree[s];
+                 top=0;
+             }
+
+             void push(Tree item)
+             {
+                  if(top==size)
+                      cout<<"Stack is full!"<<endl;
+                  else
+                      *(array+top)=item;
+                      top++;
+             }
+             Tree pop()
+             {
+                 if(top==0)
+                     cout<<"Stack is empty!"<<endl;
+                 else
+                 {
+                     Tree item;
+                     top--;
+                     item=*(array+top);
+                     return item;
+                 }
+             }
+};
 
 int main(){
     findFirst();
     findFollow();
     LLtable();
+    convert();
+ /*   string s = "abcde";
+    string sub_str;
+    sub_str.assign(s,1,3);
+    cout << sub_str;*/
     return 0;
 }
 
@@ -304,11 +353,11 @@ void findFollow(){
                         for(int m=1;m<=len2;m++){
 
                             if(first[c2][m] == "epsilon"){
-cout << len3<<endl;
+//cout << len3<<endl;
                                 for(int n=1;n<=len3;n++){
                                     //follow[c1][len+m] = follow[c1][len+m]+follow[c3][m] + " ";
                                     follow[c1][len+m] = follow[c1][len+m]+follow[c3][n] ;
-cout<< "asdfghj"<<endl;
+//cout<< "asdfghj"<<endl;
                                 }
                             }
                          else follow[c1][len+m] = first[c2][m];
@@ -402,7 +451,7 @@ cout<< "asdfghj"<<endl;
                         if(str == str3 && grammar[i+2][1] == "epsilon" ){
                       //
                             str4 = grammar[i+j][len-1];
-                            cout<<"     ywq          "<< str4 <<endl;
+                        //    cout<<"     ywq          "<< str4 <<endl;
                             for(int k=0;k<28;k++){
                                 if(str4 == follow[k][0]){
                                     c3 = k;
@@ -434,8 +483,6 @@ cout<< "asdfghj"<<endl;
 
                         else break;
 
-
-
                     }
 
                 }
@@ -454,14 +501,14 @@ cout<< "asdfghj"<<endl;
             }
         }
 
-    for(int i=0;i<40;i++){
+  /*  for(int i=0;i<40;i++){
         for(int j=0;j<30;j++){
             cout << " " << follow[i][j] ;
        //     fw << first[i][j] << " ";
         }
         cout  << endl;
        // fw << endl;
-    }
+    }*/
 
 }
 
@@ -472,7 +519,8 @@ void LLtable(){
     int c1,c2;
     string str,str2,str3;
     string str4 = "";
-    string lltable[300][4] = {""};
+
+
 
     for(int j=0;j<40;j++){
         for(int k=1;k<30;k++){
@@ -546,8 +594,8 @@ void LLtable(){
                                 for(int m=1;m<10;m++){
                                     str2 += (grammar[i+k][m] + " ");
                                 }
-                                if(j == 146){cout << "BB "<< i<<" "<<k;}
-                                if(j == 147){cout << "BB "<< i<<" "<<k;}
+                          //      if(j == 146){cout << "BB "<< i<<" "<<k;}
+                          //      if(j == 147){cout << "BB "<< i<<" "<<k;}
                                  // type is here
                                  if(lltable[j][3] != "1"){
                                     lltable[j][2] = str2;
@@ -595,12 +643,181 @@ void LLtable(){
 
 
 
-        for(int i=0;i<190;i++){
+     /*   for(int i=0;i<190;i++){
             cout << i << " ";
-        for(int j=0;j<4;j++){
-            cout << "    " << lltable[i][j] ;
+        for(int j=0;j<3;j++){
+            cout << " " << lltable[i][j] ;
         }
         cout  << endl;
+    }*/
+}
+
+
+void convert(){
+    fstream fin2;
+    fin2.open("main.c",ios::in);
+    string str ="";
+    string sub_str;
+    string main[200] = {""};
+    string stack[200] = {""};
+    int count = 0;
+    int c = 0;
+    int s = 0;
+    int space = 0;
+    int space2 = 0;
+    int len = 0;
+    string newlltable[300][20];
+
+ /*   str = lltable[6][2];
+    cout << str << endl;
+for(int j = 0;j < 30;j++)
+printf("%d ",str[j]);*/
+
+
+    for(int i = 0;i < 250;i++){
+        space = 0;
+        space2 = 0;
+        newlltable[i][0] = lltable[i][0];
+        newlltable[i][1] = lltable[i][1];
+        str = lltable[i][2];
+        for(int j = 0;j < 50;j++){
+                if(str[j] == 32 && str[j+1] == 32 ){
+                    len = j;
+                    break;
+                }
+            }
+            for(int j = 0;j <= len;j++){
+                if(str[j] == 32){
+                    space2 = j;
+                    for(int k = space;k <= space2-1;k++){
+                        sub_str += str[k];
+                    }
+                newlltable[i][2+s]=sub_str;
+             //   cout << sub_str<<" ";
+                s++;
+                space = space2+1;
+                sub_str = "";
+                }
+            }
+        s = 0;
+        space = 0;
+        space2 = 0;
     }
+
+
+
+/*
+    for(int m = 0;m < 200;m++){
+        for(int j = 0;j < 15;j++){
+            cout << " " << newlltable[m][j] ;
+        }
+        cout << endl;
+    }
+*/
+
+    while (getline(fin2, str,'\n')){
+        for(int i = 0;i < 40;i++){
+            if(str[i] == 0 ){
+                len = i;
+                break;
+            }
+        }
+
+        for(int i = 0;i <= len;i++){
+            if(str[i] == 32){
+                space2 = i;
+
+                for(int j = space;j <= space2-1;j++){
+                    if(str[j] != '\t')
+                        sub_str += str[j];
+                }
+             //   cout << sub_str << " " ;
+                space = space2+1;
+                main[count] = sub_str;
+                sub_str = "";
+                count ++;
+            }
+        }
+        space = 0;
+    }
+cout <<endl;
+    for(int i = 0;i < 200;i++){
+        str = main[i];
+     //   if(str != "") cout<< str ;
+        if(str != "int" && str != "return" && str!="" &&((str[0] >= 65 && str[0] <= 90) || (str[0] >= 97 && str[0] <= 122))){
+            main[i] = "id";
+          //  cout << "fuck";
+        }
+        else if(str[0] >= 48 && str[0] <= 57){
+            main[i] = "num";
+        }
+    }
+
+    Stack trace(128);
+    int mainCnt = 0;
+    int llcnt = 2;
+    int refR, index;
+    int lastIndex;
+    int flag;
+    string lastvalue;
+    Tree tmpTree;
+    Tree newNode;
+    tmpTree.index=1;
+    tmpTree.value="$";
+    trace.push(tmpTree);
+    tmpTree.index=1;
+    tmpTree.value="Program";
+    trace.push(tmpTree);
+
+  /*  fstream fw;
+    fw.open("tree.txt",ios::out);
+    if(!fw){
+        cout << "Fail to open file" << endl;
+        exit(1);
+    }*/
+
+    tmpTree=trace.pop();
+    while(tmpTree.value != "$"){
+        index=tmpTree.index+1;
+        if(tmpTree.value == main[mainCnt]){
+            for(int i=1; i<tmpTree.index; i++){
+                cout << "  ";
+            }
+            cout << tmpTree.index << " " << tmpTree.value << endl;
+            mainCnt++;
+        }
+        else{
+            for(int i=1; i<tmpTree.index; i++){
+                cout << "  ";
+            }
+            cout << tmpTree.index << " " << tmpTree.value << endl;
+            for(refR=0; refR<250; refR++){
+                if(newlltable[refR][0]==tmpTree.value && newlltable[refR][1]==main[mainCnt]){
+                    break;
+                }
+            }
+
+            while(newlltable[refR][llcnt] != "\0"){     //backward push
+                llcnt++;
+            }
+
+            for(int i=llcnt-1; i>=2; i--){
+                newNode.index = index;
+                newNode.value = newlltable[refR][i];
+                trace.push(newNode);
+            }
+            llcnt = 2;
+        }
+        lastIndex = index;
+        lastvalue = tmpTree.value;
+        tmpTree=trace.pop();
+    }
+
+    for(int i=1; i<lastIndex; i++){
+        cout << "  ";
+    }
+    cout << lastIndex << " " << lastvalue << endl;
+
+
 }
 
