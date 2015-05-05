@@ -485,28 +485,47 @@ void LLtable(){
         }
     }
     for(int j=0;j<180;j++){
-            for(int i=0;i<85;i++){
+        for(int i=0;i<85;i++){
                 str = grammar[i+2][0];
                 if(grammar[i][0] == lltable[j][0] && str[0] != '\t'){
-                    for(int m=1;m<10;m++){
+                    if(j == 147){cout << "AAA "<< i;}
+                    if(lltable[j][3] != "1"){
+                        for(int m=1;m<10;m++){
                     lltable[j][2] += (grammar[i+1][m]+" ");
                     }
-             //       lltable[j][3] = "1";
+                    lltable[j][3] = "1";
+                    }
+
                 }
 
 
-                 if(grammar[i][0] == lltable[j][0]){
-
+                 else if(grammar[i][0] == lltable[j][0] && str[0] == '\t'){
+                     check = 0;
                     for(int k=1;k<16;k++){
-                        check = 0;
+
                         str2 = grammar[i+k][0];
                         if(str2[0] != '\t'){
                             break;
                         }
 
+                        else if(  grammar[i+k][1] == lltable[j][1]){
+                            if(j == 147){cout << "DEW "<< i<<" "<<k;}
+                            str4 = "";
+                            for(int n=1;n<10;n++){
+                                str4 += (grammar[i+k][n]+" ");
+                            }
+                            if(lltable[j][3] != "1"){
+                                lltable[j][2] = str4;
+                            lltable[j][3] = "1";
+                            }
+
+                        }
+
+
                         else if(str2[0] == '\t' && grammar[i+k][1] != lltable[j][1]){
                             str2 = grammar[i+k][1]; //VarDecl' FunDecl
                             str3 = lltable[j][1]; //;
+                            if(j == 147){cout << "BBB "<< i<<" "<<k;}
                             for(int n=0;n<40;n++){
                                  if(str2 == first[n][0]){
                                     c1 = n;
@@ -516,31 +535,33 @@ void LLtable(){
                             for(int n=0;n<20;n++){
                                  if(str3 == first[c1][n]){
                                     check = 1;
+                                    break;
                                  }
                             }
-                            if(check == 1 && str2 != "epsilon"){
+                        //    if(j == 49){cout << "AA "<< c1<<" "<<str2;}
+                         //       if(j == 50){cout << "AA "<< c1<<" "<<str2;}
+
+                            if(check == 1 /*&& str2 != "epsilon"*/){
                                 str2 = "";
                                 for(int m=1;m<10;m++){
                                     str2 += (grammar[i+k][m] + " ");
                                 }
+                                if(j == 146){cout << "BB "<< i<<" "<<k;}
+                                if(j == 147){cout << "BB "<< i<<" "<<k;}
+                                 // type is here
+                                 if(lltable[j][3] != "1"){
                                     lltable[j][2] = str2;
+                                    lltable[j][3] = "1";
+                                 }
+                                 str2 = "";
+                                 check = 0;
+                                break;
                             }
-                            if (check == 1) break;
-
                         }
 
-                        else if(  grammar[i+k][1] == lltable[j][1]){
-                            for(int n=1;n<10;n++){
-                                str4 += (grammar[i+k][n]+" ");
-                            }
-                          //  if(lltable[j][3] != "1")
-                                lltable[j][2] = str4;
-                            //lltable[j][3] = "1";
-                            str4 = "";
-                        }
                     }
                 }
-            //    else{}
+                else{}
 
             }
     }
@@ -574,8 +595,9 @@ void LLtable(){
 
 
 
-        for(int i=0;i<230;i++){
-        for(int j=0;j<3;j++){
+        for(int i=0;i<190;i++){
+            cout << i << " ";
+        for(int j=0;j<4;j++){
             cout << "    " << lltable[i][j] ;
         }
         cout  << endl;
