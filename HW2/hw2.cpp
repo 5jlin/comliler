@@ -10,7 +10,7 @@ void convert();
 char line[40];
 string grammar[94][20];
 string first[40][30];
-string follow[40][30]={};
+string follow[40][80]={};
 int list[28] ={0};
 string lltable[300][4] = {""};
 
@@ -60,7 +60,7 @@ int main(){
     findFirst();
     findFollow();
     LLtable();
-    convert();
+ //   convert();
  /*   string s = "abcde";
     string sub_str;
     sub_str.assign(s,1,3);
@@ -122,20 +122,14 @@ void findFirst(){
         }
     }
 
-space = 0;
-check = 0;
-    row++;
-    col = 0;
+        space = 0;
+        check = 0;
+        row++;
+        col = 0;
     }
 
     fin.close();
     cout  << endl;
-   /* for(int i=0;i<94;i++){
-        for(int j=0;j<20;j++){
-            cout << " "<</*i << " " << j << " " << *//*grammar[i][j] ;
-        }
-        cout  << endl;
-    }*/
     row = 0;
     check = 0;
     str = "";
@@ -154,7 +148,6 @@ check = 0;
     }
     str = "";
     check = 0;
- //   int list[28] ={0};
     col = 1;
     row = 0;
     int no = 0;
@@ -165,12 +158,10 @@ check = 0;
             }
         }
     }
-
         list[27] = 94;
     /*    for(int j=0;j<28;j++){
             cout << list[j] << " ";
         }*/
-
         int c = 0;
         int c2 = 0;
         for(int i=0;i<28;i++){
@@ -183,18 +174,15 @@ check = 0;
                     first[row][col] = grammar[j][1];
                     col++;
                 }
-
             }
             col = 1;
             row++;
             check = 0;
         }
-
         int len = 0;
         int len2 = 0;
         c = 26;
         row = 1;
-
         for(int i=93;i>=0;i--){
             str = grammar[i][0] ;
             if(str[0] >= 65 && str[0] <= 90){
@@ -294,7 +282,6 @@ void findFollow(){
 
     follow[0][1] = "$";
 
-
     for(int i=0;i<93;i++){
         str = grammar[i][0];
         if(str[0] == '\t'){
@@ -303,7 +290,7 @@ void findFollow(){
             str = grammar[i][col] ;      //str follow = str2 first
             str2 = grammar[i][col+1] ;
             if(str[0] >= 65 && str[0] <= 90 && str2[0] >= 65 && str2[0] <= 90){ //str's follow = str2' first
-                cout << str<<" "<<str2<<endl;
+         //       cout << str<<" "<<str2<<endl;
                 for(int j=0;j<28;j++){
                     if(str == follow[j][0]){
                         c1 = j;
@@ -321,17 +308,14 @@ void findFollow(){
                     if(str3[0] != '\t'){
                         break;
                     }
-
                 }
-
-
                 for(int j=0;j<28;j++){
                     if(str3 == follow[j][0]){
                         c3 = j;
                         break;
                     }
                 }
-                for(int m=1;m<30;m++){
+                for(int m=1;m<60;m++){
                             if(follow[c1][m] == ""){
                                 len = m - 1 ;
                                 break;
@@ -343,13 +327,12 @@ void findFollow(){
                                 break;
                             }
                         }
-                        for(int m=1;m<30;m++){
+                        for(int m=1;m<80;m++){
                             if(follow[c3][m] == ""){
                                 len3 = m -1;
                                 break;
                             }
                         }
-
                         for(int m=1;m<=len2;m++){
 
                             if(first[c2][m] == "epsilon"){
@@ -361,11 +344,7 @@ void findFollow(){
                                 }
                             }
                          else follow[c1][len+m] = first[c2][m];
-
-
                         }
-
-
                 col ++;
             }
              if(str[0] >= 65 && str[0] <= 90 && (str2[0] < 65 || str2[0] > 90) && str2 != ""){
@@ -375,141 +354,138 @@ void findFollow(){
                         break;
                     }
                 }
-                for(int m=1;m<30;m++){
+                for(int m=1;m<80;m++){
                             if(follow[c1][m] == ""){
                                 len = m ;
                                 break;
                             }
                         }
                 follow[c1][len] = str2;
-
             col ++;
             }
-
-
             else col ++;
             }
         }
-
-
-
     }
     for(int i=0;i<83;i++){//avoid over
             str = grammar[i][0];
                 if(str[0] != '\t'){
-
                     for(int j = 1 ; j < 7 ; j++){
                         str2 = grammar[i+j][0];
                         len = 0;
                         if(str2[0] == '\t'){
-
                             for(int k = 1 ; k < 10 ; k++){
                             str3 = grammar[i+j][k];
-//cout << str3 << str3[0]<< endl;
-//printf("%d \n",str3[0]);
                             if(str3[0] == 0){
-
                                 len = k-1;
                                 break;
                             }
                         }
                         str3 = grammar[i+j][len] ;
-                  //      cout << i << " " << j << " " <<len<<" "<< str3 <<endl;
-                        if(str3[0] >= 65 && str3[0] <= 90){
-                            for(int k=0;k<28;k++){
+                        if(str3[0] >= 65 && str3[0] <= 90 && str != str3){
+                     //       cout << i << " " << j << " " <<len<<" "<< str3 <<" "<<str<<endl;
+                            for(int k=0;k<30;k++){
                                 if(str3 == follow[k][0]){
                                     c1 = k;
                                     break;
                                 }
                             }
-                            for(int k=0;k<28;k++){
+                            for(int k=0;k<30;k++){
                                 if(str == follow[k][0]){
                                     c2 = k;
                                     break;
                                 }
                             }
-                        }
-                        for(int m=1;m<30;m++){
-                            if(follow[c1][m] == ""){
+
+                        for(int m=1;m<80;m++){
+                            if(follow[c1][m] == "" && follow[c1][m+1] == ""){
                                 len3 = m ;
                                 break;
                             }
                         }
-                        for(int m=1;m<30;m++){
-                            if(follow[c2][m] == ""){
+                        for(int m=1;m<80;m++){
+                            if(follow[c2][m] == "" && follow[c2][m+1] == ""){
                                 len2 = m - 1;
                                 break;
                             }
                         }
+
                      //   cout << c1 <<" " << c2<<" "<<len2<<" "<<len3<<endl;
+                        for(int m=1;m<=len2;m++){
+                            follow[c1][len3+m] = follow[c2][m];
+                        }
+                    }
+                        if(str == str3 && grammar[i+2][1] == "epsilon" && j <= 3){
+                            str4 = grammar[i+j][len-1];
+                       //     cout << i << " " << j << " " <<len<<" "<< str4 <<" "<<str<<endl;
 
+                            for(int k=0;k<30;k++){
+                                if(str4 == follow[k][0]){
+                                    c1 = k;
+                                    break;
+                                }
+                            }
+                            for(int k=0;k<30;k++){
+                                if(str == follow[k][0]){
+                                    c2 = k;
+                                    break;
+                                }
+                            }
 
+                        for(int m=1;m<80;m++){
+                            if(follow[c1][m] == "" && follow[c1][m+1] == ""){
+                                len3 = m ;
+                                break;
+                            }
+                        }
+                        for(int m=1;m<80;m++){
+                            if(follow[c2][m] == "" && follow[c2][m+1] == ""){
+                                len2 = m - 1;
+                                break;
+                            }
+                        }
+
+                     //   cout << c1 <<" " << c2<<" "<<len2<<" "<<len3<<endl;
                         for(int m=1;m<=len2;m++){
                             follow[c1][len3+m] = follow[c2][m];
                         }
 
-                        if(str == str3 && grammar[i+2][1] == "epsilon" ){
-                      //
-                            str4 = grammar[i+j][len-1];
-                        //    cout<<"     ywq          "<< str4 <<endl;
-                            for(int k=0;k<28;k++){
-                                if(str4 == follow[k][0]){
-                                    c3 = k;
-                                    break;
-                                }
-                            }
-                            for(int m=1;m<30;m++){
-                            if(follow[c3][m] == ""){
-                                len3 = m - 1;
-                                break;
-                            }
-                        }
-                            for(int m=1;m<30;m++){
-                            if(follow[c2][m] == ""){
-                                len2 = m - 1;
-                                break;
-                            }
-                        }
-
-                            for(int m=1;m<=len2;m++){
-                                follow[c3][len3+m] = follow[c2][m];
-
-                            }
-
-                        }
 
 
                         }
-
+                        }
                         else break;
-
                     }
-
                 }
-
         }
+
+        //---------------------------
+
+
+
+
+
+        //----------------------------
 
 
     for(int i=0;i<30;i++){
-            for(int j=1;j<30;j++){
+            for(int j=1;j<80;j++){
                 str = follow[i][j];
-                for(int k=j+1;k<30;k++){
+                for(int k=j+1;k<80;k++){
                     if(follow[i][k] == str){
                         follow[i][k] = "";
                     }
                 }
             }
         }
-
-  /*  for(int i=0;i<40;i++){
-        for(int j=0;j<30;j++){
+ /*   for(int i=0;i<35;i++){
+        for(int j=0;j<80;j++){
             cout << " " << follow[i][j] ;
        //     fw << first[i][j] << " ";
         }
         cout  << endl;
        // fw << endl;
     }*/
-
 }
 
 
@@ -520,23 +496,20 @@ void LLtable(){
     string str,str2,str3;
     string str4 = "";
 
-
-
     for(int j=0;j<40;j++){
         for(int k=1;k<30;k++){
             if(first[j][k] != ""){
             lltable[row][0] = first[j][0];
             lltable[row][1] = first[j][k];
             row++;
-
             }
         }
     }
-    for(int j=0;j<180;j++){
+    for(int j=0;j<200;j++){
         for(int i=0;i<85;i++){
                 str = grammar[i+2][0];
                 if(grammar[i][0] == lltable[j][0] && str[0] != '\t'){
-                    if(j == 147){cout << "AAA "<< i;}
+              //      if(j == 147){cout << "AAA "<< i;}
                     if(lltable[j][3] != "1"){
                         for(int m=1;m<10;m++){
                     lltable[j][2] += (grammar[i+1][m]+" ");
@@ -556,7 +529,7 @@ void LLtable(){
                             break;
                         }
 
-                        else if(  grammar[i+k][1] == lltable[j][1]){
+                        else if( str2[0] == '\t' && grammar[i+k][1] == lltable[j][1]){
                             if(j == 147){cout << "DEW "<< i<<" "<<k;}
                             str4 = "";
                             for(int n=1;n<10;n++){
@@ -643,13 +616,13 @@ void LLtable(){
 
 
 
-     /*   for(int i=0;i<190;i++){
+        for(int i=0;i<200;i++){
             cout << i << " ";
         for(int j=0;j<3;j++){
             cout << " " << lltable[i][j] ;
         }
         cout  << endl;
-    }*/
+    }
 }
 
 
@@ -812,12 +785,6 @@ cout <<endl;
         lastvalue = tmpTree.value;
         tmpTree=trace.pop();
     }
-
-    for(int i=1; i<lastIndex; i++){
-        cout << "  ";
-    }
-    cout << lastIndex << " " << lastvalue << endl;
-
 
 }
 
